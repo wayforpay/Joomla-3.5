@@ -1,1 +1,1 @@
-# Joomla-3.5
+#Плагин оплаты через шлюз WayForPay для Joomla VirtueMart
