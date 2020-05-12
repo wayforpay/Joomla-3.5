@@ -241,7 +241,12 @@ class plgVmPaymentWayforpay extends vmPSPlugin
 
     function plgVmOnPaymentNotification()
     {
+            $isCb = false;
 	    $data = vRequest::getPost();
+	    if (!isset($data['orderReference'])) {
+            $data = json_decode(file_get_contents("php://input"), true);
+            $isCb = true;
+	    }
 
 	    if (!class_exists('VirtueMartModelOrders'))
 		    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.fphp');
@@ -269,7 +274,9 @@ class plgVmPaymentWayforpay extends vmPSPlugin
 		    $orderitems['virtuemart_order_id'] = $order_s_id;
 		    $orderitems['comments'] = 'Wayforpay ID: ' . $order_id . " Ref ID : " . $data['orderReference'];
 		    $order->updateStatusForOneOrder($order_s_id, $orderitems, true);
-		    $w4p->getAnswerToGateWay($data);
+		    if ($isCb) {
+                        echo $w4p->getAnswerToGateWay($data);
+                    }
 	    } else {
 		    $order->updateStatusForOneOrder($order_s_id, $orderitems, true);
 //		    echo $response;
