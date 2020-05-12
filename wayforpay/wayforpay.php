@@ -204,10 +204,10 @@ class plgVmPaymentWayforpay extends vmPSPlugin
 		    $order->updateStatusForOneOrder($order_s_id, $orderitems, true);
 		    $w4p->getAnswerToGateWay($data);
 	    }
-//	    else {
+	    else {
 //		    $order->updateStatusForOneOrder($order_s_id, $orderitems, true);
-//		    echo $response;
-//	    }
+		    echo $w4p->getAnswerToGateWay($data);
+	    }
 
 	    // get the correct cart / session
 	    $cart = VirtueMartCart::getCart();
