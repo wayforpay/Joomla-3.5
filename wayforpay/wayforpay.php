@@ -241,8 +241,12 @@ class plgVmPaymentWayforpay extends vmPSPlugin
 
     function plgVmOnPaymentNotification()
     {
+        $isCb = false;
 	    $data = vRequest::getPost();
-
+	    if (!isset($data['orderReference'])) {
+            $data = json_decode(file_get_contents("php://input"), true);
+            $isCb = true;
+	    }
 	    if (!class_exists('VirtueMartModelOrders'))
 		    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.fphp');
 
@@ -269,7 +273,9 @@ class plgVmPaymentWayforpay extends vmPSPlugin
 		    $orderitems['virtuemart_order_id'] = $order_s_id;
 		    $orderitems['comments'] = 'Wayforpay ID: ' . $order_id . " Ref ID : " . $data['orderReference'];
 		    $order->updateStatusForOneOrder($order_s_id, $orderitems, true);
-		    $w4p->getAnswerToGateWay($data);
+		    if ($isCb) {
+                echo $w4p->getAnswerToGateWay($data);
+            }
 	    } else {
 		    $order->updateStatusForOneOrder($order_s_id, $orderitems, true);
 //		    echo $response;
@@ -300,7 +306,7 @@ class plgVmPaymentWayforpay extends vmPSPlugin
      * Create the table for this plugin if it does not yet exist.
      * This functions checks if the called plugin is active one.
      * When yes it is calling the standard method to create the tables
-     * @author Valérie Isaksen
+     * @author Valrie Isaksen
      *
      */
     function plgVmOnStoreInstallPaymentPluginTable($jplugin_id)
@@ -313,7 +319,7 @@ class plgVmPaymentWayforpay extends vmPSPlugin
      * additional payment info in the cart.
      *
      * @author Max Milbers
-     * @author Valérie isaksen
+     * @author Valrie isaksen
      *
      * @param VirtueMartCart $cart : the actual cart
      * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
@@ -420,9 +426,9 @@ class plgVmPaymentWayforpay extends vmPSPlugin
         return $this->onShowOrderPrint($order_number, $method_id);
     }
 
-    function plgVmDeclarePluginParamsPaymentVM3($name, $id, &$data)
+    function plgVmDeclarePluginParamsPaymentVM3(&$data)
     {
-        return $this->declarePluginParams('payment', $name, $id, $data);
+        return $this->declarePluginParams('payment', $data);
     }
 
     function plgVmSetOnTablePluginParamsPayment($name, $id, &$table)
