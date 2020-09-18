@@ -177,7 +177,7 @@ class plgVmPaymentWayforpay extends vmPSPlugin
 	    $data = vRequest::getPost();
 
 	    if (!class_exists('VirtueMartModelOrders'))
-		    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.fphp');
+		    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 
 	    require(__DIR__ . DS . 'WayForPay.cls.php');
 
