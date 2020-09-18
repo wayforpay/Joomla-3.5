@@ -197,7 +197,7 @@ class plgVmPaymentWayforpay extends vmPSPlugin
 	    $response = $w4p->isPaymentValid($data);
 
 	    if ($response === true) {
-		    $orderitems['order_status'] = $method->status_success;
+		    $orderitems['order_status'] = $method->wayforpay_status_success;
 		    $orderitems['customer_notified'] = 0;
 		    $orderitems['virtuemart_order_id'] = $order_s_id;
 		    $orderitems['comments'] = 'Wayforpay ID: ' . $order_id . " Ref ID : " . $data['orderReference'];
