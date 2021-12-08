@@ -267,9 +267,16 @@ class plgVmPaymentWayforpay extends vmPSPlugin
 	    $w4p->setSecretKey($method->wayforpay_secret_key);
 
 	    $response = $w4p->isPaymentValid($data);
+            if (
+                isset($data['transactionStatus']) &&
+                $data['transactionStatus'] == 'Refunded'
+            ) {
+                echo $w4p->getAnswerToGateWay($data);
+                exit();
+            }
 
 	    if ($response === true) {
-		    $orderitems['order_status'] = $method->status_success;
+		    @$orderitems['order_status'] = $method->status_success;
 		    $orderitems['customer_notified'] = 0;
 		    $orderitems['virtuemart_order_id'] = $order_s_id;
 		    $orderitems['comments'] = 'Wayforpay ID: ' . $order_id . " Ref ID : " . $data['orderReference'];
