@@ -1,1 +1,1 @@
-#Плагин оплаты через шлюз WayForPay для Joomla VirtueMart
+#Плагін оплати через шлюз WayForPay для Joomla VirtueMart
